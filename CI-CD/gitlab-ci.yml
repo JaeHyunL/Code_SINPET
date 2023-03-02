@@ -1,0 +1,15 @@
+services:
+  - docker:latest
+
+before_script:
+  - ls -al script/build.sh
+  - chmod a+x script/*
+  - ls -al script/build.sh
+  - docker info
+
+
+
+build_image:
+  stage: build
+  script:
+    - script/build.sh
