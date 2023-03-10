@@ -1,0 +1,52 @@
+
+services:
+  - docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+stages:
+  # - build
+  - test_container
+  # - test_api_unit
+
+
+# build_image:
+#   stage: build
+  # before_script:
+  #   - ls -al script/build.sh 
+  #   - chmod a+x script/*
+  #   - ls -al script/build.sh
+  #   - docker info
+#   script:
+#     - script/build.sh
+
+
+test_container:
+  stage: test_container
+  before_script:
+    - ls -al script/build.sh 
+    - chmod a+x script/*
+    - ls -al script/build.sh
+    - docker info
+
+  script:
+    - docker-compose build
+    - docker-compose up -d
+    - docker-compose ps
+    - docker exec -i apiServer python3 -m pytest
+
+# api_code_test:
+#   stage: test_api_unit
+#   image: python:3.11-bullseye
+#   services:
+#     - name: docker:dind
+#       command: [ "--tls=false" ]
+#   before_script:
+#     - python -m venv .venv
+#     - source .venv/bin/activate
+#     - pip install --upgrade pip
+#     - pip install -r requirements.txt
+#   script:
+#     python -m pytest
+
