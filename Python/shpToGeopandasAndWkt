@@ -1,0 +1,16 @@
+import geopandas as gpd
+from sqlalchemy import create_engine
+
+# create the sqlalchemy connection engine
+db_connection_url = "postgresql://user:password@localhost:5432/gis_db"
+con = create_engine(db_connection_url)
+
+# read in the data
+gdf = gpd.read_file('shapefile/holc_ad_data.shp')
+
+# Drop nulls in the geometry column
+print('Dropping ' + str(gdf.geometry.isna().sum()) + ' nulls.')
+gdf = gdf.dropna(subset=['geometry'])
+
+# Push the geodataframe to postgresql
+gdf.to_postgis("redlining", con, index=False, if_exists='replace') 
