@@ -11,6 +11,8 @@ with open('list.txt', 'r') as f:
 for music_uri in read_txts:
     yt = YouTube(music_uri)
     # print(yt)
+    # 유투브 다운로드 오류시 해결방법 https://github.com/pytube/pytube/issues/84#issuecomment-1751541977
+    # 일부 지원하지 않는 동영상에 대해서.
     rr = yt.streams.filter(progressive=True, file_extension='mp4')\
         .order_by('resolution')\
         .desc()\
@@ -23,3 +25,5 @@ for music_uri in read_txts:
 
     subprocess.call(command, shell=True)
     os.path.dirname()
+
+
